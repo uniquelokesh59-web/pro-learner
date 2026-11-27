@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Learner — Inter 1st & 2nd Year BiPC Study Companion</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D BiPC Introduction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #intro3dCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #intro3dCanvas:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Interactive 3D Introduction Overlay -->
+    <div id="intro3dOverlay" class="fixed inset-0 z-50 bg-slate-950 text-white flex flex-col justify-between overflow-hidden transition-opacity duration-500">
+        <!-- Three.js Fullscreen Canvas Container -->
+        <div id="intro3dCanvasWrapper" class="absolute inset-0">
+            <canvas id="intro3dCanvas"></canvas>
+        </div>
+
+        <!-- Subtle Radial Gradient Vignette for Readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-transparent to-slate-950/90 pointer-events-none"></div>
+
+        <!-- Top Bar inside 3D Intro -->
+        <div class="relative z-10 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-5 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-2 rounded-2xl">
+                <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-dna"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-sm tracking-tight block leading-none">Pro Learner</span>
+                    <span class="text-[10px] text-indigo-300 font-medium">3D BiPC Interactive Intro</span>
+                </div>
+            </div>
+
+            <button 
+                type="button" 
+                id="skipIntroBtn" 
+                class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-semibold text-white transition-all flex items-center gap-2"
+            >
+                <span>Skip Intro</span>
+                <i class="fa-solid fa-forward-step text-xs"></i>
+            </button>
+        </div>
+
+        <!-- Center Drag Hint Pill -->
+        <div class="relative z-10 mx-auto my-auto pointer-events-none text-center px-4">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 text-[11px] font-medium text-indigo-200 shadow-lg">
+                <i class="fa-solid fa-hand-pointer text-amber-300"></i>
+                <span>Drag or swipe to rotate the 3D BiPC DNA & Atomic Helix</span>
+            </span>
+        </div>
+
+        <!-- Bottom Feature Showcase & Start CTA -->
+        <div class="relative z-10 max-w-4xl w-full mx-auto px-4 sm:px-6 pb-7 sm:pb-10 text-center space-y-5">
+            <div class="space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-200 text-xs font-semibold">
+                    <i class="fa-solid fa-graduation-cap text-amber-300"></i>
+                    <span>Inter 1st Year & 2nd Year BiPC • IPE & EAPCET / NEET</span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+                    Master Botany, Zoology, Physics & Chemistry in 3D Speed
+                </h1>
+                <p class="text-xs sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                    Ask doubts by <strong>Voice Search</strong> or typing, switch between <strong>Gemini, ChatGPT & Perplexity</strong> styles, practice interactive MCQs, and sync your revision notes.
+                </p>
+            </div>
+
+            <!-- 4 BiPC Subject Pills -->
+            <div id="introCardsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto text-left">
+                <div data-step="0" class="intro-step-card bg-white/10 backdrop-blur-md border border-emerald-400/50 ring-1 ring-emerald-400/30 rounded-xl p-2.5 flex items-center gap-2.5 transition-all duration-300">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">Botany</p>
+                        <p class="text-[10px] text-slate-300">1st & 2nd Year</p>
+                    </div>
+                </div>
+                <div data-step="1" class="intro-step-card bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 transition-all duration-300">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">Zoology</p>
+                        <p class="text-[10px] text-slate-300">IPE 2/4/8 Marks</p>
+                    </div>
+                </div>
+                <div data-step="2" class="intro-step-card bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 transition-all duration-300">
+                    <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">Physics</p>
+                        <p class="text-[10px] text-slate-300">Derivations & Laws</p>
+                    </div>
+                </div>
+                <div data-step="3" class="intro-step-card bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 transition-all duration-300">
+                    <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">Chemistry</p>
+                        <p class="text-[10px] text-slate-300">Reactions & MCQs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive 3D Tour Step Dots -->
+            <div class="flex items-center justify-center gap-2" id="introTourDots">
+                <button type="button" data-tour="0" class="tour-dot w-6 h-1.5 rounded-full bg-indigo-400 transition-all" title="Step 1: Botany & DNA"></button>
+                <button type="button" data-tour="1" class="tour-dot w-2 h-1.5 rounded-full bg-white/30 hover:bg-white/60 transition-all" title="Step 2: Zoology & Human Biology"></button>
+                <button type="button" data-tour="2" class="tour-dot w-2 h-1.5 rounded-full bg-white/30 hover:bg-white/60 transition-all" title="Step 3: Physics & Atomic Orbitals"></button>
+                <button type="button" data-tour="3" class="tour-dot w-2 h-1.5 rounded-full bg-white/30 hover:bg-white/60 transition-all" title="Step 4: Chemistry & AI Voice Search"></button>
+            </div>
+
+            <!-- Enter App Button -->
+            <div class="pt-1 flex flex-wrap items-center justify-center gap-3">
+                <button 
+                    type="button" 
+                    id="enterAppBtn" 
+                    class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm sm:text-base shadow-xl shadow-indigo-950/60 transition-all transform hover:scale-[1.02] flex items-center gap-2.5"
+                >
+                    <span>Start Studying Now</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-2.5 shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-sm">
+                    <i class="fa-solid fa-dna text-base"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">Pro Learner</h1>
+                    <p class="text-[11px] font-medium text-indigo-600 mt-0.5">Inter BiPC Study Hub</p>
+                </div>
+            </div>
+
+            <!-- Right Actions: 3D Intro Replay, Google Login & Saved Notes Drawer Button -->
+            <div class="flex items-center space-x-2">
+                <!-- Replay 3D Intro Button -->
+                <button 
+                    type="button" 
+                    id="replay3dIntroBtn" 
+                    class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs sm:text-sm transition-colors flex items-center gap-1.5 border border-indigo-200/80"
+                    title="View 3D BiPC Introduction"
+                >
+                    <i class="fa-solid fa-cube text-indigo-600"></i>
+                    <span class="hidden md:inline">3D Intro</span>
+                </button>
+
+                <!-- Google Sign-In / Student Profile Control -->
+                <div id="authContainer" class="flex items-center">
+                    <button 
+                        type="button" 
+                        id="googleLoginBtn" 
+                        class="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 border border-slate-300 shadow-2xs"
+                        title="Sign in with Google to sync your BiPC study notes"
+                    >
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                            <path fill="#34A853" d="M12 24c3.3 0 6.08-1.09 8.1-2.96l-3.88-3.05c-1.1.74-2.51 1.18-4.22 1.18-3.24 0-5.99-2.19-6.97-5.13H1.01v3.14C3.05 21.2 7.24 24 12 24Z"/>
+                            <path fill="#FBBC05" d="M5.03 14.04c-.25-.74-.39-1.54-.39-2.36 0-.82.14-1.62.39-2.36V6.18H1.01C.37 7.45 0 8.88 0 10.38s.37 2.93 1.01 4.2l4.02-3.14Z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.79 0 3.41.62 4.68 1.82l3.5-3.5C18.07 1.19 15.3 0 12 0 7.24 0 3.05 2.8 1.01 6.82l4.02 3.14c.98-2.94 3.73-5.21 6.97-5.21Z"/>
+                        </svg>
+                        <span class="hidden xs:inline sm:inline">Sign in with Google</span>
+                        <span class="sm:hidden">Login</span>
+                    </button>
+
+                    <!-- Logged-in Student Profile Pill (Hidden until signed in) -->
+                    <div id="userProfilePill" class="hidden items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl pl-1.5 pr-2.5 py-1">
+                        <img id="userAvatarImg" src="" alt="Student profile" class="w-7 h-7 rounded-lg object-cover bg-indigo-600 text-white hidden">
+                        <div id="userAvatarFallback" class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shrink-0">S</div>
+                        <div class="hidden md:block text-left leading-tight max-w-[120px]">
+                            <p id="userDisplayName" class="text-xs font-bold text-slate-800 truncate">Student</p>
+                            <p id="userSyncStatus" class="text-[10px] font-medium text-emerald-600 truncate">Cloud Synced</p>
+                        </div>
+                        <button 
+                            type="button" 
+                            id="googleLogoutBtn" 
+                            class="ml-1 text-slate-400 hover:text-rose-600 p-1 rounded-lg transition-colors" 
+                            title="Sign out"
+                        >
+                            <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button 
+                    type="button" 
+                    id="openSavedBtn" 
+                    class="relative px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 font-semibold text-xs sm:text-sm transition-colors flex items-center gap-2 border border-slate-200/80"
+                >
+                    <i class="fa-solid fa-bookmark text-indigo-600"></i>
+                    <span class="hidden sm:inline">Saved Notes</span>
+                    <span id="savedCountBadge" class="ml-0.5 px-1.5 py-0.2 text-[11px] font-bold rounded-full bg-indigo-600 text-white">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 space-y-6">
+
+        <!-- Year & Subject Control Panel -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <!-- Year Selector Toggle -->
+                <div>
+                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Academic Year</span>
+                    <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200/70" id="yearToggleGroup">
+                        <button type="button" data-year="1st Year" class="year-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-indigo-700 shadow-sm transition-all">
+                            Inter 1st Year
+                        </button>
+                        <button type="button" data-year="2nd Year" class="year-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                            Inter 2nd Year
+                        </button>
+                        <button type="button" data-year="All BiPC" class="year-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+                            All BiPC
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Syllabus Focus Badge -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-3 py-2 rounded-xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span id="syllabusLabel">Focus: Inter 1st Year BiPC (AP & TS / NCERT)</span>
+                </div>
+            </div>
+
+            <!-- BiPC Subject Filter Pills -->
+            <div>
+                <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">BiPC Subject Filter</span>
+                <div class="flex flex-wrap gap-2" id="subjectFilterGroup">
+                    <button type="button" data-subject="All Subjects" class="subject-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-600 text-white shadow-xs transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>All Subjects</span>
+                    </button>
+                    <button type="button" data-subject="Botany" class="subject-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-seedling text-emerald-600"></i>
+                        <span>Botany</span>
+                    </button>
+                    <button type="button" data-subject="Zoology" class="subject-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-heart-pulse text-amber-600"></i>
+                        <span>Zoology</span>
+                    </button>
+                    <button type="button" data-subject="Physics" class="subject-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-atom text-sky-600"></i>
+                        <span>Physics</span>
+                    </button>
+                    <button type="button" data-subject="Chemistry" class="subject-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-purple-50 text-purple-800 border border-purple-200 hover:bg-purple-100 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-flask text-purple-600"></i>
+                        <span>Chemistry</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Search & Voice Input Box -->
+        <section class="bg-gradient-to-br from-indigo-700 via-indigo-800 to-slate-900 rounded-2xl p-5 sm:p-7 text-white shadow-lg relative overflow-hidden">
+            <div class="relative z-10 max-w-3xl mx-auto space-y-4">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">Ask Any BiPC Doubt by Voice or Search</h2>
+                    <p class="text-xs sm:text-sm text-indigo-200">Instant concepts, IPE 2/4/8 Mark answers, formulas & EAPCET/NEET MCQs</p>
+                </div>
+
+                <!-- Search Input + Voice Button Bar -->
+                <div class="bg-white rounded-2xl p-2 shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div class="flex items-center flex-grow px-3 py-1.5">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 mr-3"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Search e.g., Krebs Cycle, Human Heart, Newton's Laws..." 
+                            class="w-full text-slate-900 placeholder-slate-400 text-sm sm:text-base focus:outline-none bg-transparent"
+                            autocomplete="off"
+                        >
+                        <button type="button" id="clearSearchBtn" class="hidden text-slate-400 hover:text-slate-600 p-1.5" title="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 shrink-0">
+                        <!-- Voice Search Trigger Button -->
+                        <button 
+                            type="button" 
+                            id="voiceSearchBtn" 
+                            class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2"
+                            title="Speak your study topic or question"
+                        >
+                            <i id="voiceMicIcon" class="fa-solid fa-microphone"></i>
+                            <span id="voiceBtnLabel">Voice Search</span>
+                        </button>
+
+                        <!-- Normal Search Submit Button -->
+                        <button 
+                            type="button" 
+                            id="searchSubmitBtn" 
+                            class="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center gap-2"
+                        >
+                            <span>Study Now</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Study Engine Selector (ChatGPT, Gemini, Perplexity style) -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white/10 border border-white/15 rounded-xl p-2.5">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-200 px-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-sparkles text-amber-300"></i>
+                        <span>AI Study Style:</span>
+                    </span>
+                    <div class="grid grid-cols-3 gap-1.5 w-full sm:w-auto" id="aiEngineGroup">
+                        <button type="button" data-engine="gemini" class="ai-engine-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-indigo-900 shadow-sm transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
+                            <span>Gemini</span>
+                        </button>
+                        <button type="button" data-engine="chatgpt" class="ai-engine-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-white/90 hover:bg-white/15 transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-robot text-emerald-300"></i>
+                            <span>ChatGPT</span>
+                        </button>
+                        <button type="button" data-engine="perplexity" class="ai-engine-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-white/90 hover:bg-white/15 transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-globe text-sky-300"></i>
+                            <span>Perplexity</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Voice Listening Live Banner -->
+                <div id="voiceListeningBanner" class="hidden bg-rose-500/20 border border-rose-300/40 backdrop-blur-sm rounded-xl px-4 py-2.5 flex items-center justify-between text-xs sm:text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                        </span>
+                        <span id="voiceTranscriptPreview" class="font-medium text-white">Listening... Speak your BiPC doubt clearly</span>
+                    </div>
+                    <button type="button" id="stopVoiceBtn" class="text-xs font-bold uppercase tracking-wider bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-lg">
+                        Stop
+                    </button>
+                </div>
+
+                <!-- Dynamic Quick-Tap Sample Topic Chips -->
+                <div class="pt-1">
+                    <div class="text-[11px] font-medium text-indigo-200 mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-amber-300"></i>
+                        <span>Popular <span id="chipContextLabel">1st Year BiPC</span> topics (tap to study):</span>
+                    </div>
+                    <div id="topicChipsContainer" class="flex flex-wrap gap-2">
+                        <!-- Dynamically populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Toast Notification Banner (No alert() used) -->
+        <div id="toastBanner" class="hidden rounded-xl p-3.5 text-xs sm:text-sm font-medium flex items-center justify-between shadow-sm border">
+            <div class="flex items-center gap-2.5">
+                <i id="toastIcon" class="fa-solid fa-circle-info"></i>
+                <span id="toastMessage">Message</span>
+            </div>
+            <button type="button" onclick="hideToast()" class="opacity-70 hover:opacity-100 p-1">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Study Output Workspace -->
+        <section class="space-y-4">
+            <!-- Study Mode Selector Bar -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Study Format Mode</span>
+                </div>
+                <div class="grid grid-cols-2 sm:flex flex-wrap gap-2" id="studyModeGroup">
+                    <button type="button" data-mode="concept" class="study-mode-btn active px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-sm transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Detailed Concept</span>
+                    </button>
+                    <button type="button" data-mode="ipe" class="study-mode-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-pen text-emerald-600"></i>
+                        <span>IPE Exam Q&A (2, 4, 8M)</span>
+                    </button>
+                    <button type="button" data-mode="revision" class="study-mode-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-amber-500"></i>
+                        <span>Quick Revision & Formulas</span>
+                    </button>
+                    <button type="button" data-mode="mcq" class="study-mode-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-question text-rose-500"></i>
+                        <span>Practice MCQs (EAPCET/NEET)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Study Answer Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[320px] flex flex-col">
+                <!-- Card Top Toolbar -->
+                <div class="px-4 sm:px-6 py-3.5 bg-slate-50/80 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span id="resultTopicTitle" class="text-sm font-bold text-slate-800">Study Workspace</span>
+                        <span id="loadingBadge" class="hidden inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-ping"></span>
+                            Preparing Study Notes...
+                        </span>
+                    </div>
+
+                    <!-- Action Buttons: Read Aloud, Bookmark, Copy -->
+                    <div class="flex items-center space-x-2">
+                        <button 
+                            type="button" 
+                            id="readAloudBtn" 
+                            disabled
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:pointer-events-none"
+                            title="Listen to explanation hands-free"
+                        >
+                            <i id="readAloudIcon" class="fa-solid fa-volume-high"></i>
+                            <span id="readAloudText">Read Aloud</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            id="saveNoteBtn" 
+                            disabled
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 hover:border-emerald-200 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:pointer-events-none"
+                            title="Save to Saved Notes for revision"
+                        >
+                            <i class="fa-regular fa-bookmark"></i>
+                            <span>Save Note</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            id="copyNoteBtn" 
+                            disabled
+                            class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:pointer-events-none"
+                            title="Copy study notes"
+                        >
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="copyNoteText">Copy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card Content Body -->
+                <div class="p-5 sm:p-7 flex-grow flex flex-col">
+                    <!-- Welcome Empty State -->
+                    <div id="emptyWelcomeState" class="my-auto py-8 text-center max-w-lg mx-auto space-y-3">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-2xl shadow-inner">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">Welcome to Pro Learner!</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                            Select your <strong>Inter Year</strong> and <strong>BiPC Subject</strong> above, then search by typing or using <strong>Voice Search</strong>. Switch between Detailed Concepts, IPE 2/4/8 Mark Q&A, Quick Revision, or EAPCET/NEET MCQs anytime!
+                        </p>
+                    </div>
+
+                    <!-- Loading Skeleton -->
+                    <div id="studySkeleton" class="hidden space-y-4 py-2 animate-pulse">
+                        <div class="h-5 bg-slate-200 rounded-lg w-2/5"></div>
+                        <div class="space-y-2">
+                            <div class="h-3.5 bg-slate-200 rounded w-full"></div>
+                            <div class="h-3.5 bg-slate-200 rounded w-11/12"></div>
+                            <div class="h-3.5 bg-slate-200 rounded w-4/5"></div>
+                        </div>
+                        <div class="h-24 bg-slate-100 rounded-xl w-full"></div>
+                        <div class="space-y-2">
+                            <div class="h-3.5 bg-slate-200 rounded w-3/4"></div>
+                            <div class="h-3.5 bg-slate-200 rounded w-5/6"></div>
+                        </div>
+                    </div>
+
+                    <!-- Rendered Study Notes Output -->
+                    <div id="studyOutputContainer" class="hidden text-slate-800 text-sm sm:text-base leading-relaxed space-y-4"></div>
+
+                    <!-- Perplexity Live Web Sources Container -->
+                    <div id="sourcesContainer" class="hidden mt-5 pt-4 border-t border-slate-200">
+                        <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-globe text-sky-600"></i>
+                            <span>Verified Web Sources (Perplexity Search Mode)</span>
+                        </div>
+                        <div id="sourcesList" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Interactive MCQ Quiz Container (Used when MCQ Mode is active) -->
+                    <div id="mcqQuizContainer" class="hidden space-y-5"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Saved Notes Slide-over Drawer Modal -->
+    <div id="savedDrawerBackdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden transition-opacity"></div>
+    <aside id="savedNotesDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+            <div class="flex items-center gap-2.5">
+                <i class="fa-solid fa-bookmark text-indigo-600"></i>
+                <h2 class="font-bold text-base text-slate-900">Saved Revision Notes</h2>
+            </div>
+            <button type="button" id="closeSavedBtn" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="savedNotesList" class="flex-grow overflow-y-auto p-4 space-y-3">
+            <!-- Saved items populated from cloud / memory -->
+        </div>
+
+        <div class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+            <span id="drawerStorageLabel">Sign in with Google to sync notes across devices</span>
+            <button type="button" id="clearAllSavedBtn" class="text-rose-600 hover:underline font-semibold hidden">Clear All</button>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-xs text-slate-400 border-t border-slate-200/70 bg-white">
+        Pro Learner • Dedicated to Intermediate 1st & 2nd Year BiPC Students
+    </footer>
+
+    <!-- Application Script with Firebase Google Authentication & Cloud Notes Sync -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            signInWithCustomToken, 
+            signInAnonymously, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            addDoc, 
+            deleteDoc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // ==========================================
+        // 0. FIREBASE INITIALIZATION & AUTH STATE
+        // ==========================================
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let firebaseConfig = null;
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                firebaseConfig = JSON.parse(__firebase_config);
+            }
+        } catch (e) {
+            firebaseConfig = null;
+        }
+
+        let app = null;
+        let auth = null;
+        let db = null;
+        let currentUser = null;
+        let unsubscribeNotesSnapshot = null;
+
+        if (firebaseConfig) {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        }
+
+        // ==========================================
+        // 1. CURRICULUM DATA & SAMPLE TOPICS
+        // ==========================================
+        const SAMPLE_TOPICS = {
+            '1st Year': {
+                'All Subjects': [
+                    'Cell Cycle and Cell Division',
+                    'Structure of Human Heart',
+                    'Newton’s Laws of Motion',
+                    'Chemical Bonding & Hybridization'
+                ],
+                'Botany': [
+                    'Five Kingdom Classification (Whittaker)',
+                    'Mitosis vs Meiosis Differences',
+                    'Internal Structure of Dicot Root',
+                    'Taxonomic Aids & Herbarium'
+                ],
+                'Zoology': [
+                    'Cardiac Cycle & Double Circulation',
+                    'Structure of Nephron & Urine Formation',
+                    'Cockroach Digestive System (8 Marks)',
+                    'Types of Animal Tissues'
+                ],
+                'Physics': [
+                    'Work-Energy Theorem Proof',
+                    'Bernoulli’s Principle & Applications',
+                    'Escape Velocity & Orbital Velocity',
+                    'First Law of Thermodynamics'
+                ],
+                'Chemistry': [
+                    'VSEPR Theory & Molecular Shapes',
+                    'Bohr’s Model of Hydrogen Atom',
+                    'Le Chatelier’s Principle',
+                    'IUPAC Nomenclature of Organic Compounds'
+                ]
+            },
+            '2nd Year': {
+                'All Subjects': [
+                    'Krebs Cycle (Citric Acid Cycle)',
+                    'DNA Replication & Transcription',
+                    'Ray Optics & Lens Maker’s Formula',
+                    'Electrochemistry & Nernst Equation'
+                ],
+                'Botany': [
+                    'Photosynthesis: Light Reaction & Z-Scheme',
+                    'Krebs Cycle Steps & ATP Yield (8 Marks)',
+                    'Mendel’s Laws of Inheritance',
+                    'Recombinant DNA Technology & PCR'
+                ],
+                'Zoology': [
+                    'Human Male & Female Reproductive System',
+                    'Immunity: Innate vs Acquired & AIDS',
+                    'Darwinism & Modern Synthetic Theory',
+                    'Menstrual Cycle Hormonal Control'
+                ],
+                'Physics': [
+                    'Kirchhoff’s Laws & Wheatstone Bridge',
+                    'Lens Maker’s Formula Derivation',
+                    'Bohr’s Atomic Spectra & Radioactivity',
+                    'P-N Junction Diode & Rectifiers'
+                ],
+                'Chemistry': [
+                    'Nernst Equation & Galvanic Cells',
+                    'Aldol Condensation & Cannizzaro Reaction',
+                    'Coordination Compounds & Werner’s Theory',
+                    'Biomolecules: Carbohydrates & Proteins'
+                ]
+            },
+            'All BiPC': {
+                'All Subjects': [
+                    'Glycolysis & Krebs Cycle',
+                    'Human Nervous System & Synapse',
+                    'Gauss’s Law in Electrostatics',
+                    'Periodic Table Trends'
+                ],
+                'Botany': [
+                    'Transpiration & Stomatal Movement',
+                    'Plant Growth Regulators (Auxins, Gibberellins)',
+                    'Double Fertilization in Angiosperms',
+                    'Ecological Pyramids & Succession'
+                ],
+                'Zoology': [
+                    'Sliding Filament Theory of Muscle Contraction',
+                    'Oxygen Dissociation Curve',
+                    'Human Genome Project & DNA Fingerprinting',
+                    'Endocrine Glands & Hormones'
+                ],
+                'Physics': [
+                    'Projectile Motion Equations',
+                    'Photoelectric Effect & Einstein’s Equation',
+                    'Simple Harmonic Motion (SHM)',
+                    'Biot-Savart Law'
+                ],
+                'Chemistry': [
+                    'Hybridization (sp, sp2, sp3)',
+                    'SN1 vs SN2 Reaction Mechanisms',
+                    'First Order Reaction Kinetics',
+                    'Transition Elements (d-Block) Properties'
+                ]
+            }
+        };
+
+        // ==========================================
+        // 2. STATE MANAGEMENT
+        // ==========================================
+        let selectedYear = '1st Year';
+        let selectedSubject = 'All Subjects';
+        let selectedStudyMode = 'concept';
+        let selectedAiEngine = 'gemini';
+        let currentQuery = '';
+        let currentRawContent = '';
+        let isSearching = false;
+        let isSpeaking = false;
+        let savedNotes = [];
+
+        // Helper to guarantee strings and prevent [object Object] rendering
+        function safeText(val) {
+            if (val === null || val === undefined) return '';
+            if (typeof val === 'string') return val;
+            if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+            if (Array.isArray(val)) return val.map(safeText).join(' ');
+            if (typeof val === 'object') {
+                if (typeof val.text === 'string') return val.text;
+                if (typeof val.title === 'string') return val.title;
+                if (typeof val.name === 'string') return val.name;
+                if (typeof val.content === 'string') return val.content;
+                try { return JSON.stringify(val); } catch (e) { return ''; }
+            }
+            return String(val);
+        }
+
+        // ==========================================
+        // 3. DOM ELEMENTS
+        // ==========================================
+        const yearBtns = document.querySelectorAll('.year-btn');
+        const subjectBtns = document.querySelectorAll('.subject-btn');
+        const studyModeBtns = document.querySelectorAll('.study-mode-btn');
+        const aiEngineBtns = document.querySelectorAll('.ai-engine-btn');
+        const syllabusLabel = document.getElementById('syllabusLabel');
+        const chipContextLabel = document.getElementById('chipContextLabel');
+        const topicChipsContainer = document.getElementById('topicChipsContainer');
+
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+        const voiceBtnLabel = document.getElementById('voiceBtnLabel');
+        const voiceListeningBanner = document.getElementById('voiceListeningBanner');
+        const voiceTranscriptPreview = document.getElementById('voiceTranscriptPreview');
+        const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+        const searchSubmitBtn = document.getElementById('searchSubmitBtn');
+
+        const toastBanner = document.getElementById('toastBanner');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastMessage = document.getElementById('toastMessage');
+
+        const resultTopicTitle = document.getElementById('resultTopicTitle');
+        const loadingBadge = document.getElementById('loadingBadge');
+        const emptyWelcomeState = document.getElementById('emptyWelcomeState');
+        const studySkeleton = document.getElementById('studySkeleton');
+        const studyOutputContainer = document.getElementById('studyOutputContainer');
+        const sourcesContainer = document.getElementById('sourcesContainer');
+        const sourcesList = document.getElementById('sourcesList');
+        const mcqQuizContainer = document.getElementById('mcqQuizContainer');
+
+        const readAloudBtn = document.getElementById('readAloudBtn');
+        const readAloudIcon = document.getElementById('readAloudIcon');
+        const readAloudText = document.getElementById('readAloudText');
+        const saveNoteBtn = document.getElementById('saveNoteBtn');
+        const copyNoteBtn = document.getElementById('copyNoteBtn');
+        const copyNoteText = document.getElementById('copyNoteText');
+
+        const openSavedBtn = document.getElementById('openSavedBtn');
+        const closeSavedBtn = document.getElementById('closeSavedBtn');
+        const savedDrawerBackdrop = document.getElementById('savedDrawerBackdrop');
+        const savedNotesDrawer = document.getElementById('savedNotesDrawer');
+        const savedNotesList = document.getElementById('savedNotesList');
+        const savedCountBadge = document.getElementById('savedCountBadge');
+        const clearAllSavedBtn = document.getElementById('clearAllSavedBtn');
+        const drawerStorageLabel = document.getElementById('drawerStorageLabel');
+
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const userProfilePill = document.getElementById('userProfilePill');
+        const userAvatarImg = document.getElementById('userAvatarImg');
+        const userAvatarFallback = document.getElementById('userAvatarFallback');
+        const userDisplayName = document.getElementById('userDisplayName');
+        const userSyncStatus = document.getElementById('userSyncStatus');
+        const googleLogoutBtn = document.getElementById('googleLogoutBtn');
+
+        // 3D Intro Elements
+        const intro3dOverlay = document.getElementById('intro3dOverlay');
+        const intro3dCanvasWrapper = document.getElementById('intro3dCanvasWrapper');
+        const intro3dCanvas = document.getElementById('intro3dCanvas');
+        const enterAppBtn = document.getElementById('enterAppBtn');
+        const skipIntroBtn = document.getElementById('skipIntroBtn');
+        const replay3dIntroBtn = document.getElementById('replay3dIntroBtn');
+        const introStepCards = document.querySelectorAll('.intro-step-card');
+        const tourDots = document.querySelectorAll('.tour-dot');
+
+        // ==========================================
+        // 3B. THREE.JS INTERACTIVE 3D BIPC INTRO
+        // ==========================================
+        let introScene = null;
+        let introCamera = null;
+        let introRenderer = null;
+        let introAnimFrameId = null;
+        let isIntroVisible = true;
+        let isLaunchingApp = false;
+        let isDragging3D = false;
+        let prevMouseX = 0;
+        let prevMouseY = 0;
+        let targetRotX = 0.15;
+        let targetRotY = 0;
+        let targetCamZ = 16;
+        let currentCamZ = 28; // Starts zoomed out for opening fly-in animation
+        let tourStepIndex = 0;
+        let tourIntervalId = null;
+
+        function setIntroTourStep(step) {
+            tourStepIndex = step;
+            const stepAngles = [
+                { rotX: 0.12, rotY: 0.2, camZ: 15.5 },
+                { rotX: -0.15, rotY: 1.5, camZ: 14.8 },
+                { rotX: 0.28, rotY: 3.1, camZ: 16.5 },
+                { rotX: -0.08, rotY: 4.7, camZ: 15.2 }
+            ];
+            if (!isDragging3D && !isLaunchingApp && stepAngles[step]) {
+                targetRotX = stepAngles[step].rotX;
+                targetRotY = stepAngles[step].rotY;
+                targetCamZ = stepAngles[step].camZ;
+            }
+
+            introStepCards.forEach((card, idx) => {
+                if (idx === step) {
+                    card.classList.remove('border-white/15');
+                    card.classList.add('border-indigo-400', 'bg-white/20', 'scale-[1.03]');
+                } else {
+                    card.classList.add('border-white/15');
+                    card.classList.remove('border-indigo-400', 'bg-white/20', 'scale-[1.03]');
+                }
+            });
+
+            tourDots.forEach((dot, idx) => {
+                if (idx === step) {
+                    dot.classList.remove('w-2', 'bg-white/30');
+                    dot.classList.add('w-6', 'bg-indigo-400');
+                } else {
+                    dot.classList.remove('w-6', 'bg-indigo-400');
+                    dot.classList.add('w-2', 'bg-white/30');
+                }
+            });
+        }
+
+        function startIntroTourAutoplay() {
+            if (tourIntervalId) clearInterval(tourIntervalId);
+            setIntroTourStep(0);
+            tourIntervalId = setInterval(() => {
+                if (!isIntroVisible || isDragging3D || isLaunchingApp) return;
+                setIntroTourStep((tourStepIndex + 1) % 4);
+            }, 3200);
+        }
+
+        tourDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = parseInt(dot.dataset.tour, 10);
+                setIntroTourStep(idx);
+            });
+        });
+
+        introStepCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const idx = parseInt(card.dataset.step, 10);
+                setIntroTourStep(idx);
+            });
+        });
+
+        function init3DIntroScene() {
+            if (!window.THREE || !intro3dCanvas || !intro3dCanvasWrapper) return;
+
+            introScene = new THREE.Scene();
+            introScene.fog = new THREE.FogExp2(0x020617, 0.032);
+
+            const width = intro3dCanvasWrapper.clientWidth || window.innerWidth;
+            const height = intro3dCanvasWrapper.clientHeight || window.innerHeight;
+
+            introCamera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+            currentCamZ = 28;
+            targetCamZ = 16;
+            introCamera.position.set(0, 0.5, currentCamZ);
+
+            introRenderer = new THREE.WebGLRenderer({ canvas: intro3dCanvas, antialias: true, alpha: true });
+            introRenderer.setSize(width, height);
+            introRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            introScene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0x818cf8, 1.4);
+            dirLight1.position.set(10, 15, 12);
+            introScene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0x34d399, 1.0);
+            dirLight2.position.set(-10, -10, 8);
+            introScene.add(dirLight2);
+
+            // Main Rotating Group
+            const mainGroup = new THREE.Group();
+            introScene.add(mainGroup);
+
+            // 1. 3D DNA Double Helix (Botany & Zoology)
+            const dnaGroup = new THREE.Group();
+            const numPairs = 22;
+            const helixRadius = 2.1;
+            const verticalSpacing = 0.52;
+            const totalHeight = numPairs * verticalSpacing;
+
+            const strandMatA = new THREE.MeshStandardMaterial({ color: 0x34d399, roughness: 0.3, metalness: 0.2 });
+            const strandMatB = new THREE.MeshStandardMaterial({ color: 0x818cf8, roughness: 0.3, metalness: 0.2 });
+            const rungMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, roughness: 0.4, metalness: 0.1 });
+
+            const nodeGeo = new THREE.SphereGeometry(0.24, 16, 16);
+
+            for (let i = 0; i < numPairs; i++) {
+                const y = i * verticalSpacing - totalHeight / 2;
+                const angle = i * 0.45;
+
+                const x1 = Math.cos(angle) * helixRadius;
+                const z1 = Math.sin(angle) * helixRadius;
+                const x2 = Math.cos(angle + Math.PI) * helixRadius;
+                const z2 = Math.sin(angle + Math.PI) * helixRadius;
+
+                const sphere1 = new THREE.Mesh(nodeGeo, strandMatA);
+                sphere1.position.set(x1, y, z1);
+                dnaGroup.add(sphere1);
+
+                const sphere2 = new THREE.Mesh(nodeGeo, strandMatB);
+                sphere2.position.set(x2, y, z2);
+                dnaGroup.add(sphere2);
+
+                // Base pair rung connecting the two strands
+                const rungLength = helixRadius * 2;
+                const rungGeo = new THREE.CylinderGeometry(0.06, 0.06, rungLength, 8);
+                const rung = new THREE.Mesh(rungGeo, rungMat);
+                rung.position.set(0, y, 0);
+                rung.rotation.z = Math.PI / 2;
+                rung.rotation.y = -angle;
+                dnaGroup.add(rung);
+            }
+            dnaGroup.rotation.z = 0.22;
+            mainGroup.add(dnaGroup);
+
+            // 2. Orbiting Atomic Rings & Electrons (Physics & Chemistry)
+            const atomGroup = new THREE.Group();
+            const ringGeo = new THREE.TorusGeometry(4.4, 0.045, 12, 80);
+            const ringMat1 = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 0.4 });
+            const ringMat2 = new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x7e22ce, emissiveIntensity: 0.4 });
+
+            const orbit1 = new THREE.Mesh(ringGeo, ringMat1);
+            orbit1.rotation.set(Math.PI / 3, 0.3, 0);
+            atomGroup.add(orbit1);
+
+            const orbit2 = new THREE.Mesh(ringGeo, ringMat2);
+            orbit2.rotation.set(-Math.PI / 3, -0.3, 0);
+            atomGroup.add(orbit2);
+
+            const electronGeo = new THREE.SphereGeometry(0.22, 16, 16);
+            const electron1 = new THREE.Mesh(electronGeo, new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7 }));
+            const electron2 = new THREE.Mesh(electronGeo, new THREE.MeshStandardMaterial({ color: 0xc084fc, emissive: 0x7e22ce }));
+            atomGroup.add(electron1);
+            atomGroup.add(electron2);
+            mainGroup.add(atomGroup);
+
+            // 3. Ambient Floating Scientific Particles
+            const particlesGeo = new THREE.BufferGeometry();
+            const particleCount = 160;
+            const posArray = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 32;
+            }
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMat = new THREE.PointsMaterial({ size: 0.11, color: 0xa5b4fc, transparent: true, opacity: 0.7 });
+            const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+            introScene.add(particlesMesh);
+
+            // Mouse & Touch Drag Controls for 3D Camera Angle
+            const onPointerDown = (clientX, clientY) => {
+                isDragging3D = true;
+                prevMouseX = clientX;
+                prevMouseY = clientY;
+            };
+            const onPointerMove = (clientX, clientY) => {
+                if (!isDragging3D) return;
+                const deltaX = clientX - prevMouseX;
+                const deltaY = clientY - prevMouseY;
+                targetRotY += deltaX * 0.008;
+                targetRotX = Math.max(-0.8, Math.min(0.8, targetRotX + deltaY * 0.006));
+                prevMouseX = clientX;
+                prevMouseY = clientY;
+            };
+            const onPointerUp = () => { isDragging3D = false; };
+
+            intro3dCanvas.addEventListener('mousedown', (e) => onPointerDown(e.clientX, e.clientY));
+            window.addEventListener('mousemove', (e) => onPointerMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onPointerUp);
+
+            intro3dCanvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) onPointerDown(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            intro3dCanvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            intro3dCanvas.addEventListener('touchend', onPointerUp);
+
+            // Responsive Resize Handler
+            window.addEventListener('resize', () => {
+                if (!introRenderer || !introCamera || !intro3dCanvasWrapper) return;
+                const w = intro3dCanvasWrapper.clientWidth || window.innerWidth;
+                const h = intro3dCanvasWrapper.clientHeight || window.innerHeight;
+                introCamera.aspect = w / h;
+                introCamera.updateProjectionMatrix();
+                introRenderer.setSize(w, h);
+            });
+
+            // Animation Loop
+            let clockTime = 0;
+            function animate3DIntro() {
+                introAnimFrameId = requestAnimationFrame(animate3DIntro);
+                if (!isIntroVisible) return;
+
+                clockTime += 0.025;
+
+                // Rotate DNA & electrons continuously
+                dnaGroup.rotation.y += 0.008;
+                particlesMesh.rotation.y -= 0.0012;
+
+                // Orbiting electrons along atomic rings
+                const r = 4.4;
+                const e1Pos = new THREE.Vector3(Math.cos(clockTime * 1.4) * r, Math.sin(clockTime * 1.4) * r, 0);
+                e1Pos.applyEuler(orbit1.rotation);
+                electron1.position.copy(e1Pos);
+
+                const e2Pos = new THREE.Vector3(Math.cos(-clockTime * 1.2 + 1.5) * r, Math.sin(-clockTime * 1.2 + 1.5) * r, 0);
+                e2Pos.applyEuler(orbit2.rotation);
+                electron2.position.copy(e2Pos);
+
+                // Smoothly interpolate user drag rotation & camera zoom
+                if (!isDragging3D && !isLaunchingApp) {
+                    targetRotY += 0.003;
+                }
+                if (isLaunchingApp) {
+                    targetCamZ = 3.2;
+                    targetRotY += 0.06;
+                }
+                currentCamZ += (targetCamZ - currentCamZ) * 0.07;
+                introCamera.position.z = currentCamZ;
+
+                mainGroup.rotation.y += (targetRotY - mainGroup.rotation.y) * 0.08;
+                mainGroup.rotation.x += (targetRotX - mainGroup.rotation.x) * 0.08;
+
+                introRenderer.render(introScene, introCamera);
+            }
+
+            animate3DIntro();
+            startIntroTourAutoplay();
+        }
+
+        function hide3DIntro() {
+            if (isLaunchingApp) return;
+            isLaunchingApp = true;
+            if (tourIntervalId) clearInterval(tourIntervalId);
+
+            // Zoom through the 3D helix as the workspace opens
+            setTimeout(() => {
+                intro3dOverlay.classList.add('opacity-0', 'pointer-events-none');
+            }, 180);
+
+            setTimeout(() => {
+                isIntroVisible = false;
+                isLaunchingApp = false;
+                intro3dOverlay.classList.add('hidden');
+                if (searchInput) searchInput.focus();
+            }, 680);
+        }
+
+        function show3DIntro() {
+            isIntroVisible = true;
+            isLaunchingApp = false;
+            currentCamZ = 26;
+            targetCamZ = 16;
+            intro3dOverlay.classList.remove('hidden', 'pointer-events-none');
+            // Trigger reflow for smooth fade-in
+            void intro3dOverlay.offsetWidth;
+            intro3dOverlay.classList.remove('opacity-0');
+            if (introRenderer && introCamera && intro3dCanvasWrapper) {
+                const w = intro3dCanvasWrapper.clientWidth || window.innerWidth;
+                const h = intro3dCanvasWrapper.clientHeight || window.innerHeight;
+                introCamera.aspect = w / h;
+                introCamera.updateProjectionMatrix();
+                introRenderer.setSize(w, h);
+            }
+            startIntroTourAutoplay();
+        }
+
+        enterAppBtn.addEventListener('click', hide3DIntro);
+        skipIntroBtn.addEventListener('click', hide3DIntro);
+        replay3dIntroBtn.addEventListener('click', show3DIntro);
+
+        // ==========================================
+        // 4. MARKDOWN CONFIGURATION & TOAST HELPER
+        // ==========================================
+        if (window.marked) {
+            marked.use({
+                breaks: true,
+                gfm: true,
+                renderer: {
+                    heading(token) {
+                        const text = typeof token === 'object' && token !== null
+                            ? (this.parser && token.tokens ? this.parser.parseInline(token.tokens) : safeText(token.text))
+                            : safeText(token);
+                        const level = typeof token === 'object' && token !== null ? (token.depth || 2) : (arguments[1] || 2);
+                        const sizes = {
+                            1: 'text-xl sm:text-2xl font-extrabold text-slate-900 mt-5 mb-2 border-b border-slate-200 pb-1.5',
+                            2: 'text-lg sm:text-xl font-bold text-indigo-900 mt-5 mb-2',
+                            3: 'text-base sm:text-lg font-bold text-slate-800 mt-4 mb-1.5'
+                        };
+                        return `<h${level} class="${sizes[level] || 'font-bold text-slate-800 mt-3 mb-1'}">${text}</h${level}>`;
+                    },
+                    paragraph(token) {
+                        const text = typeof token === 'object' && token !== null
+                            ? (this.parser && token.tokens ? this.parser.parseInline(token.tokens) : safeText(token.text))
+                            : safeText(token);
+                        return `<p class="mb-3 leading-relaxed text-slate-700">${text}</p>`;
+                    },
+                    list(token) {
+                        if (typeof token === 'object' && token !== null && Array.isArray(token.items)) {
+                            const tag = token.ordered ? 'ol' : 'ul';
+                            const cls = token.ordered ? 'list-decimal pl-5 mb-4 space-y-1.5 text-slate-700' : 'list-disc pl-5 mb-4 space-y-1.5 text-slate-700';
+                            const itemsHtml = token.items.map(item => {
+                                const content = this.parser && item.tokens ? this.parser.parse(item.tokens) : safeText(item.text);
+                                return `<li class="pl-1">${content}</li>`;
+                            }).join('');
+                            return `<${tag} class="${cls}">${itemsHtml}</${tag}>`;
+                        }
+                        const body = safeText(token);
+                        const ordered = Boolean(arguments[1]);
+                        const tag = ordered ? 'ol' : 'ul';
+                        const cls = ordered ? 'list-decimal pl-5 mb-4 space-y-1.5 text-slate-700' : 'list-disc pl-5 mb-4 space-y-1.5 text-slate-700';
+                        return `<${tag} class="${cls}">${body}</${tag}>`;
+                    },
+                    blockquote(token) {
+                        const quote = typeof token === 'object' && token !== null
+                            ? (this.parser && token.tokens ? this.parser.parse(token.tokens) : safeText(token.text))
+                            : safeText(token);
+                        return `<blockquote class="border-l-4 border-indigo-500 bg-indigo-50/70 px-4 py-3 rounded-r-xl my-3 text-slate-800 text-sm">${quote}</blockquote>`;
+                    },
+                    strong(token) {
+                        const text = typeof token === 'object' && token !== null
+                            ? (this.parser && token.tokens ? this.parser.parseInline(token.tokens) : safeText(token.text))
+                            : safeText(token);
+                        return `<strong class="font-semibold text-slate-900">${text}</strong>`;
+                    },
+                    codespan(token) {
+                        const code = typeof token === 'object' && token !== null ? safeText(token.text) : safeText(token);
+                        return `<code class="bg-slate-100 text-indigo-700 px-1.5 py-0.5 rounded font-mono text-xs sm:text-sm">${code}</code>`;
+                    }
+                }
+            });
+        }
+
+        function showToast(msg, type = 'info') {
+            toastBanner.classList.remove('hidden', 'bg-rose-50', 'text-rose-800', 'border-rose-200', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-indigo-50', 'text-indigo-800', 'border-indigo-200');
+            if (type === 'error') {
+                toastBanner.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200');
+                toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-600';
+            } else if (type === 'success') {
+                toastBanner.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200');
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-600';
+            } else {
+                toastBanner.classList.add('bg-indigo-50', 'text-indigo-800', 'border-indigo-200');
+                toastIcon.className = 'fa-solid fa-circle-info text-indigo-600';
+            }
+            toastMessage.textContent = msg;
+        }
+
+        function hideToast() {
+            toastBanner.classList.add('hidden');
+        }
+        window.hideToast = hideToast;
+
+        // ==========================================
+        // 4B. GOOGLE LOGIN & CLOUD NOTES SYNC
+        // ==========================================
+        function updateAuthUI(user) {
+            currentUser = user;
+            const isGoogleUser = user && !user.isAnonymous && (user.email || user.displayName);
+
+            if (isGoogleUser) {
+                googleLoginBtn.classList.add('hidden');
+                userProfilePill.classList.remove('hidden');
+                userProfilePill.classList.add('flex');
+
+                const name = safeText(user.displayName || user.email || 'Student');
+                userDisplayName.textContent = name;
+                userSyncStatus.textContent = 'Google Sync Active';
+                drawerStorageLabel.textContent = `Synced to ${user.email || name}`;
+
+                if (user.photoURL) {
+                    userAvatarImg.src = user.photoURL;
+                    userAvatarImg.classList.remove('hidden');
+                    userAvatarFallback.classList.add('hidden');
+                    userAvatarImg.onerror = () => {
+                        userAvatarImg.classList.add('hidden');
+                        userAvatarFallback.classList.remove('hidden');
+                        userAvatarFallback.textContent = name.charAt(0).toUpperCase();
+                    };
+                } else {
+                    userAvatarImg.classList.add('hidden');
+                    userAvatarFallback.classList.remove('hidden');
+                    userAvatarFallback.textContent = name.charAt(0).toUpperCase();
+                }
+            } else {
+                googleLoginBtn.classList.remove('hidden');
+                userProfilePill.classList.add('hidden');
+                userProfilePill.classList.remove('flex');
+                drawerStorageLabel.textContent = user ? 'Guest session • Sign in with Google to save permanently' : 'Sign in with Google to sync notes';
+            }
+
+            subscribeToUserNotes(user);
+        }
+
+        function subscribeToUserNotes(user) {
+            if (unsubscribeNotesSnapshot) {
+                unsubscribeNotesSnapshot();
+                unsubscribeNotesSnapshot = null;
+            }
+
+            if (!db || !user) {
+                savedNotes = [];
+                updateSavedUI();
+                return;
+            }
+
+            const notesColRef = collection(db, 'artifacts', appId, 'users', user.uid, 'savedNotes');
+            unsubscribeNotesSnapshot = onSnapshot(
+                notesColRef,
+                (snapshot) => {
+                    const loaded = [];
+                    snapshot.forEach((docSnap) => {
+                        loaded.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    loaded.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    savedNotes = loaded;
+                    updateSavedUI();
+                },
+                (error) => {
+                    showToast('Could not sync cloud notes. Please check your connection.', 'error');
+                }
+            );
+        }
+
+        async function initAuth() {
+            if (!auth) {
+                updateAuthUI(null);
+                return;
+            }
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                // Silent fallback; user can still click Google Login manually
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                updateAuthUI(user);
+            });
+        }
+
+        async function triggerGoogleSignIn() {
+            if (!auth) {
+                showToast('Authentication service is unavailable right now.', 'error');
+                return;
+            }
+
+            googleLoginBtn.disabled = true;
+
+            try {
+                const provider = new GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                const result = await signInWithPopup(auth, provider);
+                const name = safeText(result?.user?.displayName || 'Student');
+                showToast(`Welcome, ${name}! Signed in with Google.`, 'success');
+            } catch (error) {
+                if (error?.code === 'auth/popup-closed-by-user') {
+                    showToast('Google sign-in popup was closed before completing.', 'info');
+                } else {
+                    showToast(error?.message || 'Google Sign-In could not be completed in this window.', 'error');
+                }
+            } finally {
+                googleLoginBtn.disabled = false;
+            }
+        }
+
+        googleLoginBtn.addEventListener('click', triggerGoogleSignIn);
+
+        googleLogoutBtn.addEventListener('click', async () => {
+            if (!auth) return;
+            try {
+                await signOut(auth);
+                await signInAnonymously(auth).catch(() => {});
+                showToast('Signed out of your Google account.', 'info');
+            } catch (error) {
+                showToast('Unable to sign out right now.', 'error');
+            }
+        });
+
+        // ==========================================
+        // 5. CURRICULUM SELECTORS & DYNAMIC CHIPS
+        // ==========================================
+        function updateSyllabusAndChips() {
+            const yearText = selectedYear === 'All BiPC' ? 'Inter 1st & 2nd Year BiPC' : `Inter ${selectedYear} BiPC`;
+            const subjText = selectedSubject === 'All Subjects' ? 'All BiPC Subjects' : selectedSubject;
+            syllabusLabel.textContent = `Focus: ${yearText} • ${subjText}`;
+            chipContextLabel.textContent = `${selectedYear} (${selectedSubject})`;
+
+            const topics = (SAMPLE_TOPICS[selectedYear] && SAMPLE_TOPICS[selectedYear][selectedSubject]) || SAMPLE_TOPICS['1st Year']['All Subjects'];
+            topicChipsContainer.innerHTML = '';
+
+            topics.forEach(rawTopic => {
+                const topic = safeText(rawTopic);
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'px-3 py-1.5 rounded-xl text-xs font-medium bg-white/10 hover:bg-white/20 text-white border border-white/15 transition-all text-left';
+                chip.textContent = topic;
+                chip.addEventListener('click', () => {
+                    searchInput.value = topic;
+                    clearSearchBtn.classList.remove('hidden');
+                    runStudySearch(topic);
+                });
+                topicChipsContainer.appendChild(chip);
+            });
+        }
+
+        // Year Toggle Listeners
+        yearBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedYear = btn.dataset.year;
+                yearBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-white', 'text-indigo-700', 'shadow-sm');
+                    b.classList.add('text-slate-600');
+                });
+                btn.classList.remove('text-slate-600');
+                btn.classList.add('active', 'bg-white', 'text-indigo-700', 'shadow-sm');
+                updateSyllabusAndChips();
+            });
+        });
+
+        // Subject Filter Listeners
+        subjectBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedSubject = btn.dataset.subject;
+                subjectBtns.forEach(b => {
+                    b.classList.remove('ring-2', 'ring-offset-1', 'ring-indigo-500');
+                });
+                btn.classList.add('ring-2', 'ring-offset-1', 'ring-indigo-500');
+                updateSyllabusAndChips();
+            });
+        });
+
+        // Study Mode Listeners
+        studyModeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedStudyMode = btn.dataset.mode;
+                studyModeBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                });
+                btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
+                btn.classList.add('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
+
+                if (currentQuery) {
+                    runStudySearch(currentQuery);
+                }
+            });
+        });
+
+        // AI Engine Style Selector Listeners (Gemini, ChatGPT, Perplexity)
+        aiEngineBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectedAiEngine = btn.dataset.engine;
+                aiEngineBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-white', 'text-indigo-900', 'font-bold', 'shadow-sm');
+                    b.classList.add('text-white/90', 'font-semibold');
+                });
+                btn.classList.remove('text-white/90', 'font-semibold');
+                btn.classList.add('active', 'bg-white', 'text-indigo-900', 'font-bold', 'shadow-sm');
+
+                if (currentQuery) {
+                    runStudySearch(currentQuery);
+                }
+            });
+        });
+
+        // ==========================================
+        // 10. SAVED REVISION NOTES (CLOUD FIRESTORE)
+        // ==========================================
+        function updateSavedUI() {
+            savedCountBadge.textContent = savedNotes.length;
+            savedNotesList.innerHTML = '';
+
+            if (savedNotes.length === 0) {
+                clearAllSavedBtn.classList.add('hidden');
+                savedNotesList.innerHTML = `
+                    <div class="text-center py-12 px-4 text-slate-400 space-y-2">
+                        <i class="fa-regular fa-folder-open text-3xl"></i>
+                        <p class="text-sm font-medium text-slate-600">No saved notes yet</p>
+                        <p class="text-xs">Click <strong>Save Note</strong> on any study answer to bookmark it to your account.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            clearAllSavedBtn.classList.remove('hidden');
+
+            savedNotes.forEach((note, index) => {
+                const noteTitle = safeText(note.title || 'Saved Note');
+                const noteYear = safeText(note.year || '1st Year');
+                const noteSubject = safeText(note.subject || 'BiPC');
+                const noteContent = safeText(note.content || '');
+
+                const item = document.createElement('div');
+                item.className = 'p-3.5 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 transition-all space-y-2 shadow-2xs';
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700">${noteYear}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700">${noteSubject}</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-900 line-clamp-1"></h4>
+                        </div>
+                        <button type="button" data-del="${index}" class="delete-saved-btn text-slate-400 hover:text-rose-600 p-1" title="Delete note">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500 line-clamp-2"></p>
+                    <button type="button" data-open="${index}" class="open-saved-btn w-full py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-600 text-slate-700 hover:text-white text-xs font-semibold transition-colors">
+                        Open Study Note
+                    </button>
+                `;
+                item.querySelector('h4').textContent = noteTitle;
+                item.querySelector('p').textContent = noteContent.replace(/[#*`]/g, '');
+                savedNotesList.appendChild(item);
+            });
+
+            // Attach delete & open listeners
+            document.querySelectorAll('.delete-saved-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const idx = parseInt(e.currentTarget.dataset.del, 10);
+                    const targetNote = savedNotes[idx];
+                    if (!targetNote) return;
+
+                    if (db && currentUser && targetNote.id) {
+                        try {
+                            await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'savedNotes', targetNote.id));
+                            showToast('Note removed from cloud.', 'info');
+                        } catch (err) {
+                            showToast('Failed to delete note.', 'error');
+                        }
+                    } else {
+                        savedNotes.splice(idx, 1);
+                        updateSavedUI();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.open-saved-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.currentTarget.dataset.open, 10);
+                    const note = savedNotes[idx];
+                    if (note) {
+                        currentQuery = note.title;
+                        currentRawContent = note.content;
+                        searchInput.value = note.title;
+                        clearSearchBtn.classList.remove('hidden');
+                        resultTopicTitle.textContent = `${note.title} (${note.year} • ${note.subject})`;
+                        emptyWelcomeState.classList.add('hidden');
+                        mcqQuizContainer.classList.add('hidden');
+                        studyOutputContainer.innerHTML = marked.parse(note.content);
+                        studyOutputContainer.classList.remove('hidden');
+                        readAloudBtn.disabled = false;
+                        saveNoteBtn.disabled = false;
+                        copyNoteBtn.disabled = false;
+                        closeSavedDrawer();
+                    }
+                });
+            });
+        }
+
+        saveNoteBtn.addEventListener('click', async () => {
+            if (!currentRawContent || !currentQuery) return;
+            const exists = savedNotes.some(n => safeText(n.title).toLowerCase() === currentQuery.toLowerCase() && n.year === selectedYear);
+            if (exists) {
+                showToast('This topic is already saved in your Revision Notes!', 'info');
+                return;
+            }
+
+            const newNote = {
+                title: currentQuery,
+                year: selectedYear,
+                subject: selectedSubject,
+                content: currentRawContent,
+                savedAt: new Date().toLocaleDateString(),
+                createdAt: Date.now()
+            };
+
+            if (db && currentUser) {
+                try {
+                    saveNoteBtn.disabled = true;
+                    await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'savedNotes'), newNote);
+                    const isGoogle = !currentUser.isAnonymous;
+                    showToast(isGoogle ? 'Saved & synced to your Google account!' : 'Saved to Revision Notes!', 'success');
+                } catch (err) {
+                    showToast('Could not save note right now.', 'error');
+                } finally {
+                    saveNoteBtn.disabled = false;
+                }
+            } else {
+                savedNotes.unshift(newNote);
+                updateSavedUI();
+                showToast('Saved to Revision Notes!', 'success');
+            }
+        });
+
+        clearAllSavedBtn.addEventListener('click', async () => {
+            if (db && currentUser) {
+                const toDelete = [...savedNotes];
+                for (const note of toDelete) {
+                    if (note.id) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'savedNotes', note.id)).catch(() => {});
+                    }
+                }
+            } else {
+                savedNotes = [];
+                updateSavedUI();
+            }
+        });
+
+        // ==========================================
+        // 6. VOICE SEARCH (WEB SPEECH API)
+        // ==========================================
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isListening = false;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-IN';
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                isListening = true;
+                voiceListeningBanner.classList.remove('hidden');
+                voiceSearchBtn.classList.add('bg-rose-600', 'text-white', 'border-rose-600');
+                voiceSearchBtn.classList.remove('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                voiceBtnLabel.textContent = 'Listening...';
+                voiceTranscriptPreview.textContent = 'Listening... Speak your BiPC doubt clearly';
+            };
+
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                if (transcript.trim()) {
+                    voiceTranscriptPreview.textContent = `"${transcript.trim()}"`;
+                    searchInput.value = transcript.trim();
+                    clearSearchBtn.classList.remove('hidden');
+                }
+                if (event.results[event.results.length - 1].isFinal) {
+                    const finalQuery = transcript.trim();
+                    stopVoiceRecognition();
+                    if (finalQuery) {
+                        runStudySearch(finalQuery);
+                    }
+                }
+            };
+
+            recognition.onerror = (event) => {
+                stopVoiceRecognition();
+                if (event.error === 'not-allowed') {
+                    showToast('Microphone access was blocked. Please allow microphone permission in your browser.', 'error');
+                } else if (event.error !== 'aborted') {
+                    showToast('Voice recognition could not hear clearly. Try speaking again.', 'info');
+                }
+            };
+
+            recognition.onend = () => {
+                stopVoiceRecognition();
+            };
+        }
+
+        function stopVoiceRecognition() {
+            if (recognition && isListening) {
+                try { recognition.stop(); } catch (e) {}
+            }
+            isListening = false;
+            voiceListeningBanner.classList.add('hidden');
+            voiceSearchBtn.classList.remove('bg-rose-600', 'text-white', 'border-rose-600');
+            voiceSearchBtn.classList.add('bg-rose-50', 'text-rose-600', 'border-rose-200');
+            voiceBtnLabel.textContent = 'Voice Search';
+        }
+
+        voiceSearchBtn.addEventListener('click', () => {
+            if (!recognition) {
+                showToast('Voice Search is not supported in this browser. Please type your topic.', 'error');
+                return;
+            }
+            if (isListening) {
+                stopVoiceRecognition();
+            } else {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    stopVoiceRecognition();
+                }
+            }
+        });
+
+        stopVoiceBtn.addEventListener('click', stopVoiceRecognition);
+
+        // ==========================================
+        // 7. GEMINI API STUDY ENGINE
+        // ==========================================
+        async function fetchWithRetry(url, options, maxRetries = 4) {
+            const delays = [1000, 2000, 4000, 8000];
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                try {
+                    const res = await fetch(url, options);
+                    if (!res.ok) {
+                        if ((res.status === 429 || res.status >= 500) && attempt < maxRetries) {
+                            await new Promise(r => setTimeout(r, delays[attempt]));
+                            continue;
+                        }
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err?.error?.message || `API request failed (${res.status})`);
+                    }
+                    return await res.json();
+                } catch (err) {
+                    if (attempt === maxRetries) throw err;
+                    await new Promise(r => setTimeout(r, delays[attempt]));
+                }
+            }
+        }
+
+        function getSystemInstruction() {
+            let enginePersona = '';
+            if (selectedAiEngine === 'chatgpt') {
+                enginePersona = `Adopt a clear, conversational, step-by-step tutor style like ChatGPT: break down tough concepts intuitively with relatable analogies, structured bullet points, and a friendly "Quick Check" summary at the end.`;
+            } else if (selectedAiEngine === 'perplexity') {
+                enginePersona = `Adopt a factual, research-backed, concise encyclopedic style like Perplexity AI: provide precise definitions, up-to-date scientific facts, NCERT/IPE syllabus references, and clear structured takeaways.`;
+            } else {
+                enginePersona = `Adopt a deep, comprehensive, multi-angle academic style like Gemini: connect fundamental concepts with visual step-by-step pathways, comparative tables/lists, and exam strategy insights.`;
+            }
+
+            const baseContext = `You are "Pro Learner", an expert Intermediate BiPC (Botany, Zoology, Physics, Chemistry) tutor tailored for AP & Telangana State Board (IPE) and NCERT/EAPCET/NEET students.
+${enginePersona}
+Current student filter: Inter ${selectedYear}, Subject focus: ${selectedSubject}.
+Always write clean, well-structured, accurate educational content using clear headings, bullet points, chemical/physics formulas, and biological terms.`;
+
+            if (selectedStudyMode === 'ipe') {
+                return `${baseContext}
+Format the response specifically for Intermediate Public Examination (IPE) Board Exams:
+1. **Very Short Answer Questions (VSAQ - 2 Marks)**: Provide 2-3 crisp 2-mark questions and exact scoring answers on this topic.
+2. **Short Answer Questions (SAQ - 4 Marks)**: Provide 1-2 structured 4-mark questions with point-wise answers and diagram tips.
+3. **Long Answer Question (LAQ - 8 Marks)** (if applicable to the topic): Provide a comprehensive 8-mark answer with clear subheadings.`;
+            }
+
+            if (selectedStudyMode === 'revision') {
+                return `${baseContext}
+Format the response as **High-Yield Quick Revision Notes**:
+- **Core Summary (3-4 lines)**
+- **Key Definitions & Laws**
+- **Important Formulas / Equations / Reactions** (highlight clearly)
+- **Memory Tricks / Mnemonics & EAPCET/NEET Traps**`;
+            }
+
+            return `${baseContext}
+Format the response as a **Detailed Concept Explanation**:
+- **Introduction & Definition**
+- **Step-by-Step Mechanism / Derivation / Explanation**
+- **Key Examples & Real-Life / Biological Significance**
+- **Exam Tip for Inter IPE & EAPCET/NEET**`;
+        }
+
+        async function runStudySearch(queryText) {
+            const cleanQuery = (queryText || searchInput.value).trim();
+            if (!cleanQuery) {
+                showToast('Please enter a BiPC topic or tap Voice Search to ask a question.', 'info');
+                searchInput.focus();
+                return;
+            }
+
+            if (isSearching) return;
+            isSearching = true;
+            currentQuery = cleanQuery;
+            stopSpeech();
+            hideToast();
+
+            // Update UI to loading state
+            searchSubmitBtn.disabled = true;
+            loadingBadge.classList.remove('hidden');
+            emptyWelcomeState.classList.add('hidden');
+            studyOutputContainer.classList.add('hidden');
+            sourcesContainer.classList.add('hidden');
+            sourcesList.innerHTML = '';
+            mcqQuizContainer.classList.add('hidden');
+            studySkeleton.classList.remove('hidden');
+
+            const engineNames = { gemini: 'Gemini', chatgpt: 'ChatGPT', perplexity: 'Perplexity' };
+            resultTopicTitle.textContent = `${cleanQuery} (${selectedYear} • ${selectedSubject} • ${engineNames[selectedAiEngine]})`;
+
+            readAloudBtn.disabled = true;
+            saveNoteBtn.disabled = true;
+            copyNoteBtn.disabled = true;
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            try {
+                if (selectedStudyMode === 'mcq') {
+                    // Structured JSON Schema for Interactive 3-Question MCQ Quiz
+                    const payload = {
+                        contents: [{
+                            parts: [{
+                                text: `Create 3 high-yield EAPCET / NEET level Multiple Choice Questions (MCQs) for Inter ${selectedYear} (${selectedSubject}) on the topic: "${cleanQuery}".`
+                            }]
+                        }],
+                        systemInstruction: {
+                            parts: [{ text: 'You are an expert EAPCET and NEET BiPC exam question setter. Generate accurate, syllabus-aligned MCQs with clear explanations.' }]
+                        },
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        question: { type: "STRING" },
+                                        options: {
+                                            type: "ARRAY",
+                                            items: { type: "STRING" }
+                                        },
+                                        correctIndex: { type: "INTEGER" },
+                                        explanation: { type: "STRING" }
+                                    },
+                                    required: ["question", "options", "correctIndex", "explanation"]
+                                }
+                            }
+                        }
+                    };
+
+                    const result = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const parts = result?.candidates?.[0]?.content?.parts || [];
+                    const jsonText = parts.map(p => safeText(p?.text)).join('').trim();
+                    if (!jsonText) throw new Error('Could not generate MCQs.');
+
+                    const parsedMcqs = JSON.parse(jsonText);
+                    if (!Array.isArray(parsedMcqs) || parsedMcqs.length === 0) {
+                        throw new Error('Invalid quiz format received.');
+                    }
+                    renderMCQQuiz(parsedMcqs, cleanQuery);
+                } else {
+                    // Standard Study Modes (Detailed Concept, IPE Exam Q&A, Quick Revision)
+                    const payload = {
+                        contents: [{
+                            parts: [{
+                                text: `Topic / Question: ${cleanQuery}\nTarget Level: Inter ${selectedYear}, Subject: ${selectedSubject}`
+                            }]
+                        }],
+                        systemInstruction: {
+                            parts: [{ text: getSystemInstruction() }]
+                        }
+                    };
+
+                    // Enable live Google Search grounding when Perplexity mode is selected
+                    if (selectedAiEngine === 'perplexity') {
+                        payload.tools = [{ google_search: {} }];
+                    }
+
+                    const result = await fetchWithRetry(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const candidate = result?.candidates?.[0];
+                    const parts = candidate?.content?.parts || [];
+                    const answerText = parts.map(p => safeText(p?.text)).join('\n').trim();
+                    if (!answerText) throw new Error('No explanation returned.');
+
+                    currentRawContent = answerText;
+                    studyOutputContainer.innerHTML = marked.parse(answerText);
+
+                    // Extract and display live web sources if Perplexity grounding was used
+                    const attributions = candidate?.groundingMetadata?.groundingAttributions || [];
+                    const validSources = attributions
+                        .map(attr => ({
+                            uri: attr?.web?.uri,
+                            title: attr?.web?.title
+                        }))
+                        .filter(s => s.uri && s.title);
+
+                    if (selectedAiEngine === 'perplexity' && validSources.length > 0) {
+                        validSources.slice(0, 5).forEach(src => {
+                            const link = document.createElement('a');
+                            link.href = src.uri;
+                            link.target = '_blank';
+                            link.rel = 'noopener noreferrer';
+                            link.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-medium transition-colors max-w-xs truncate';
+                            link.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i><span class="truncate"></span>`;
+                            link.querySelector('span').textContent = src.title;
+                            sourcesList.appendChild(link);
+                        });
+                        sourcesContainer.classList.remove('hidden');
+                    }
+
+                    studySkeleton.classList.add('hidden');
+                    studyOutputContainer.classList.remove('hidden');
+
+                    readAloudBtn.disabled = false;
+                    saveNoteBtn.disabled = false;
+                    copyNoteBtn.disabled = false;
+                }
+            } catch (error) {
+                studySkeleton.classList.add('hidden');
+                emptyWelcomeState.classList.remove('hidden');
+                showToast(error.message || 'Unable to fetch study notes. Please try again.', 'error');
+            } finally {
+                isSearching = false;
+                searchSubmitBtn.disabled = false;
+                loadingBadge.classList.add('hidden');
+            }
+        }
+
+        // ==========================================
+        // 8. INTERACTIVE MCQ QUIZ RENDERER
+        // ==========================================
+        function renderMCQQuiz(mcqs, topic) {
+            mcqQuizContainer.innerHTML = '';
+            let rawSummaryForSave = `# Practice MCQs: ${topic} (${selectedYear})\n\n`;
+
+            mcqs.forEach((item, qIdx) => {
+                const questionText = safeText(item?.question || 'Question');
+                const optionsList = Array.isArray(item?.options) ? item.options.map(opt => safeText(opt)) : [];
+                const correctIdx = typeof item?.correctIndex === 'number' ? item.correctIndex : 0;
+                const explanationText = safeText(item?.explanation || '');
+
+                rawSummaryForSave += `**Q${qIdx + 1}. ${questionText}**\n- Correct Answer: ${optionsList[correctIdx] || ''}\n- Explanation: ${explanationText}\n\n`;
+
+                const card = document.createElement('div');
+                card.className = 'p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3';
+
+                const qTitle = document.createElement('div');
+                qTitle.className = 'font-bold text-sm sm:text-base text-slate-900';
+                qTitle.innerHTML = `<span class="inline-block px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 text-xs mr-2">Q${qIdx + 1}</span>`;
+                qTitle.appendChild(document.createTextNode(questionText));
+                card.appendChild(qTitle);
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2.5';
+
+                const expBox = document.createElement('div');
+                expBox.className = 'hidden mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900';
+                expBox.innerHTML = `<strong><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>Explanation:</strong> `;
+                expBox.appendChild(document.createTextNode(explanationText));
+
+                let answered = false;
+
+                optionsList.forEach((optText, optIdx) => {
+                    const optBtn = document.createElement('button');
+                    optBtn.type = 'button';
+                    optBtn.className = 'text-left p-3 rounded-xl border border-slate-200 bg-white hover:border-indigo-400 text-xs sm:text-sm font-medium text-slate-700 transition-all flex items-start gap-2.5';
+                    const letter = String.fromCharCode(65 + optIdx);
+                    const badge = document.createElement('span');
+                    badge.className = 'w-6 h-6 rounded-lg bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center shrink-0';
+                    badge.textContent = letter;
+                    const labelSpan = document.createElement('span');
+                    labelSpan.textContent = optText;
+                    optBtn.appendChild(badge);
+                    optBtn.appendChild(labelSpan);
+
+                    optBtn.addEventListener('click', () => {
+                        if (answered) return;
+                        answered = true;
+
+                        const allOptBtns = optionsGrid.querySelectorAll('button');
+                        allOptBtns.forEach((b, idx) => {
+                            b.disabled = true;
+                            if (idx === correctIdx) {
+                                b.classList.remove('border-slate-200', 'bg-white');
+                                b.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900', 'font-semibold');
+                            } else if (idx === optIdx && optIdx !== correctIdx) {
+                                b.classList.remove('border-slate-200', 'bg-white');
+                                b.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900');
+                            }
+                        });
+
+                        expBox.classList.remove('hidden');
+                    });
+
+                    optionsGrid.appendChild(optBtn);
+                });
+
+                card.appendChild(optionsGrid);
+                card.appendChild(expBox);
+                mcqQuizContainer.appendChild(card);
+            });
+
+            currentRawContent = rawSummaryForSave;
+            studySkeleton.classList.add('hidden');
+            mcqQuizContainer.classList.remove('hidden');
+            readAloudBtn.disabled = false;
+            saveNoteBtn.disabled = false;
+            copyNoteBtn.disabled = false;
+        }
+
+        // ==========================================
+        // 9. READ ALOUD (TEXT-TO-SPEECH)
+        // ==========================================
+        function stopSpeech() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeaking = false;
+            readAloudIcon.className = 'fa-solid fa-volume-high';
+            readAloudText.textContent = 'Read Aloud';
+            readAloudBtn.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+        }
+
+        readAloudBtn.addEventListener('click', () => {
+            if (!('speechSynthesis' in window)) {
+                showToast('Text-to-Speech is not supported in your browser.', 'error');
+                return;
+            }
+
+            if (isSpeaking) {
+                stopSpeech();
+                return;
+            }
+
+            if (!currentRawContent) return;
+
+            // Strip markdown symbols for natural speech
+            const plainText = currentRawContent
+                .replace(/[#*`_>-]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            const utterance = new SpeechSynthesisUtterance(plainText);
+            utterance.lang = 'en-IN';
+            utterance.rate = 0.98;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                readAloudIcon.className = 'fa-solid fa-stop';
+                readAloudText.textContent = 'Stop Audio';
+                readAloudBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+            };
+
+            utterance.onend = () => stopSpeech();
+            utterance.onerror = () => stopSpeech();
+
+            window.speechSynthesis.speak(utterance);
+        });
+
+        // ==========================================
+        // 10B. SAVED NOTES DRAWER CONTROLS
+        // ==========================================
+        function openSavedDrawer() {
+            savedDrawerBackdrop.classList.remove('hidden');
+            savedNotesDrawer.classList.remove('translate-x-full');
+        }
+
+        function closeSavedDrawer() {
+            savedDrawerBackdrop.classList.add('hidden');
+            savedNotesDrawer.classList.add('translate-x-full');
+        }
+
+        openSavedBtn.addEventListener('click', openSavedDrawer);
+        closeSavedBtn.addEventListener('click', closeSavedDrawer);
+        savedDrawerBackdrop.addEventListener('click', closeSavedDrawer);
+
+        // ==========================================
+        // 11. SEARCH & COPY EVENT LISTENERS
+        // ==========================================
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.trim().length > 0) {
+                clearSearchBtn.classList.remove('hidden');
+            } else {
+                clearSearchBtn.classList.add('hidden');
+            }
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                runStudySearch(searchInput.value);
+            }
+        });
+
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.classList.add('hidden');
+            searchInput.focus();
+        });
+
+        searchSubmitBtn.addEventListener('click', () => runStudySearch(searchInput.value));
+
+        copyNoteBtn.addEventListener('click', () => {
+            if (!currentRawContent) return;
+            const temp = document.createElement('textarea');
+            temp.value = currentRawContent;
+            temp.style.position = 'fixed';
+            temp.style.left = '-9999px';
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                copyNoteText.textContent = 'Copied!';
+                setTimeout(() => { copyNoteText.textContent = 'Copy'; }, 2000);
+            } catch (e) {
+                showToast('Unable to copy text.', 'error');
+            } finally {
+                document.body.removeChild(temp);
+            }
+        });
+
+        // Initialize App on Load
+        window.addEventListener('load', () => {
+            init3DIntroScene();
+            updateSyllabusAndChips();
+            updateSavedUI();
+            initAuth();
+        });
+    </script>
+</body>
+</html>
